@@ -81,7 +81,7 @@ class Datum:
     rows = []
     data = util.arrayInvert(self.pixels)
     for row in data:
-      ascii = map(asciiGrayscaleConversionFunction, row)
+      ascii = list(map(asciiGrayscaleConversionFunction, row))
       rows.append( "".join(ascii) )
     return "\n".join(rows)
     

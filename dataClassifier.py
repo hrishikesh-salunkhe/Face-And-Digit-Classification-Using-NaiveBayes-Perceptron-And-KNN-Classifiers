@@ -310,9 +310,9 @@ def runClassifier(args, options):
   # print("RAW TRAIN DATA: ", rawTrainingData[1])
   # # Extract features
   print( "Extracting features...")
-  trainingData = map(featureFunction, rawTrainingData)
-  validationData = map(featureFunction, rawValidationData)
-  testData = map(featureFunction, rawTestData)
+  trainingData = list(map(featureFunction, rawTrainingData))
+  validationData = list(map(featureFunction, rawValidationData))
+  testData = list(map(featureFunction, rawTestData))
   # print("MAPPED TRAIN DATA: ")
   # for d in trainingData:
   #   print(d)
