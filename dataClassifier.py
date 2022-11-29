@@ -307,15 +307,15 @@ def runClassifier(args, options):
     rawTestData = samples.loadDataFile("data/digitdata/testimages", numTest,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT)
     testLabels = samples.loadLabelsFile("data/digitdata/testlabels", numTest)
     
-  print("RAW TRAIN DATA: ", rawTrainingData[1])
-  # Extract features
+  # print("RAW TRAIN DATA: ", rawTrainingData[1])
+  # # Extract features
   print( "Extracting features...")
   trainingData = map(featureFunction, rawTrainingData)
   validationData = map(featureFunction, rawValidationData)
   testData = map(featureFunction, rawTestData)
-  print("MAPPED TRAIN DATA: ")
-  for d in trainingData:
-    print(d)
+  # print("MAPPED TRAIN DATA: ")
+  # for d in trainingData:
+  #   print(d)
 
   # Conduct training and testing
   print( "Training...")

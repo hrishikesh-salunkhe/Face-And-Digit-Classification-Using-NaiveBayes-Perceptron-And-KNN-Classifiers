@@ -60,15 +60,12 @@ class Datum:
     self.width = DATUM_WIDTH
     if data == None:
       data = [[' ' for i in range(DATUM_WIDTH)] for j in range(DATUM_HEIGHT)] 
-    # print("DATA:",list(list(convertToInteger(data))[0]))
     self.pixels = util.arrayInvert(convertToInteger(data)) 
 
   def getPixel(self, column, row):
     """
     Returns the value of the pixel at column, row as 0, or 1.
     """
-    print("row: ", row, " col: ", column)
-    print(self.pixels)
     return self.pixels[column][row]
       
   def getPixels(self):
@@ -115,7 +112,6 @@ def loadDataFile(filename, n,width,height):
       print ("Truncating at %d examples (maximum)" % i)
       break
     items.append(Datum(data,DATUM_WIDTH,DATUM_HEIGHT))
-    # print("ITEMS:", items[0])
   return items
 
 import zipfile
@@ -155,27 +151,30 @@ def IntegerConversionFunction(character):
   """
   Helper function for file reading.
   """
-  print(character)
-  print("-----------------------")
+  # for i in range(len(character)):
+  #   for j in range(len(character[i])):
   if(character == ' '):
-    print("FOUND SPACE")
+    # character[i][j] = 0
     return 0
   elif(character == '+'):
-    print("FOUND +")
     return 1
+    # character[i][j] = 1
   elif(character == '#'):
-    print("FOUND #")
-    return 2    
+    return 2
+    # character[i][j] = 2
+
+  # return character    
 
 def convertToInteger(data):
   """
   Helper function for file reading.
   """
-  if type(data) is list:
-  # != type([]):
+  # if type(data) is list:
+  if(type(data) != type([])):
     return IntegerConversionFunction(data)
   else:
-    return map(convertToInteger, data)
+    # return map(convertToInteger, data)
+    return list(map(convertToInteger, data))
 
 # Testing
 
