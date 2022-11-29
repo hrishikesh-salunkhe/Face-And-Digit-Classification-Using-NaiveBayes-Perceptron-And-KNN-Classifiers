@@ -8,6 +8,7 @@
 
 # This file is for running the minicontest submission.
 
+""""
 import minicontest
 import samples
 import sys
@@ -55,3 +56,4 @@ if __name__ == '__main__':
   outfile.close()
   print "Write successful."
   
+"""

@@ -30,7 +30,7 @@ def basicFeatureExtractorDigit(datum):
   each pixel in the provided datum is white (0) or gray/black (1)
   """
   a = datum.getPixels()
-
+  
   features = util.Counter()
   for x in range(DIGIT_DATUM_WIDTH):
     for y in range(DIGIT_DATUM_HEIGHT):
@@ -116,11 +116,11 @@ def analysis(classifier, guesses, testLabels, testData, rawTestData, printImage)
       prediction = guesses[i]
       truth = testLabels[i]
       if (prediction != truth):
-          print "==================================="
-          print "Mistake on example %d" % i 
-          print "Predicted %d; truth is %d" % (prediction, truth)
-          print "Image: "
-          print rawTestData[i]
+          print( "===================================")
+          print( "Mistake on example %d" % i )
+          print( "Predicted %d; truth is %d" % (prediction, truth))
+          print( "Image: ")
+          print( rawTestData[i])
           break
 
 
@@ -153,9 +153,9 @@ class ImagePrinter:
             x,y = pix
             image.pixels[x][y] = 2
         except:
-            print "new features:", pix
+            print( "new features:", pix)
             continue
-      print image  
+      print( image  )
 
 def default(str):
   return str + ' [Default: %default]'
@@ -183,15 +183,15 @@ def readCommand( argv ):
   args = {}
   
   # Set up variables according to the command line input.
-  print "Doing classification"
-  print "--------------------"
-  print "data:\t\t" + options.data
-  print "classifier:\t\t" + options.classifier
+  print( "Doing classification")
+  print( "--------------------")
+  print( "data:\t\t" + options.data)
+  print( "classifier:\t\t" + options.classifier)
   if not options.classifier == 'minicontest':
-    print "using enhanced features?:\t" + str(options.features)
+    print( "using enhanced features?:\t" + str(options.features))
   else:
-    print "using minicontest feature extractor"
-  print "training set size:\t" + str(options.training)
+    print( "using minicontest feature extractor")
+  print( "training set size:\t" + str(options.training))
   if(options.data=="digits"):
     printImage = ImagePrinter(DIGIT_DATUM_WIDTH, DIGIT_DATUM_HEIGHT).printImage
     if (options.features):
@@ -207,8 +207,8 @@ def readCommand( argv ):
     else:
       featureFunction = basicFeatureExtractorFace      
   else:
-    print "Unknown dataset", options.data
-    print USAGE_STRING
+    print( "Unknown dataset", options.data)
+    print( USAGE_STRING)
     sys.exit(2)
     
   if(options.data=="digits"):
@@ -217,19 +217,19 @@ def readCommand( argv ):
     legalLabels = range(2)
     
   if options.training <= 0:
-    print "Training set size should be a positive integer (you provided: %d)" % options.training
-    print USAGE_STRING
+    print( "Training set size should be a positive integer (you provided: %d)" % options.training)
+    print( USAGE_STRING)
     sys.exit(2)
     
   if options.smoothing <= 0:
-    print "Please provide a positive number for smoothing (you provided: %f)" % options.smoothing
-    print USAGE_STRING
+    print( "Please provide a positive number for smoothing (you provided: %f)" % options.smoothing)
+    print( USAGE_STRING)
     sys.exit(2)
     
   if options.odds:
     if options.label1 not in legalLabels or options.label2 not in legalLabels:
-      print "Didn't provide a legal labels for the odds ratio: (%d,%d)" % (options.label1, options.label2)
-      print USAGE_STRING
+      print( "Didn't provide a legal labels for the odds ratio: (%d,%d)" % (options.label1, options.label2))
+      print( USAGE_STRING)
       sys.exit(2)
 
   if(options.classifier == "mostFrequent"):
@@ -238,25 +238,25 @@ def readCommand( argv ):
     classifier = naiveBayes.NaiveBayesClassifier(legalLabels)
     classifier.setSmoothing(options.smoothing)
     if (options.autotune):
-        print "using automatic tuning for naivebayes"
+        print( "using automatic tuning for naivebayes")
         classifier.automaticTuning = True
     else:
-        print "using smoothing parameter k=%f for naivebayes" %  options.smoothing
+        print( "using smoothing parameter k=%f for naivebayes" %  options.smoothing)
   elif(options.classifier == "perceptron"):
     classifier = perceptron.PerceptronClassifier(legalLabels,options.iterations)
   elif(options.classifier == "mira"):
     classifier = mira.MiraClassifier(legalLabels, options.iterations)
     if (options.autotune):
-        print "using automatic tuning for MIRA"
+        print( "using automatic tuning for MIRA")
         classifier.automaticTuning = True
     else:
-        print "using default C=0.001 for MIRA"
+        print( "using default C=0.001 for MIRA")
   elif(options.classifier == 'minicontest'):
     import minicontest
     classifier = minicontest.contestClassifier(legalLabels)
   else:
-    print "Unknown classifier:", options.classifier
-    print USAGE_STRING
+    print( "Unknown classifier:", options.classifier)
+    print( USAGE_STRING)
     
     sys.exit(2)
 
@@ -293,38 +293,41 @@ def runClassifier(args, options):
   numTest = options.test
 
   if(options.data=="faces"):
-    rawTrainingData = samples.loadDataFile("facedata/facedatatrain", numTraining,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
-    trainingLabels = samples.loadLabelsFile("facedata/facedatatrainlabels", numTraining)
-    rawValidationData = samples.loadDataFile("facedata/facedatatrain", numTest,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
-    validationLabels = samples.loadLabelsFile("facedata/facedatatrainlabels", numTest)
-    rawTestData = samples.loadDataFile("facedata/facedatatest", numTest,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
-    testLabels = samples.loadLabelsFile("facedata/facedatatestlabels", numTest)
+    rawTrainingData = samples.loadDataFile("data/facedata/facedatatrain", numTraining,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
+    trainingLabels = samples.loadLabelsFile("data/facedata/facedatatrainlabels", numTraining)
+    rawValidationData = samples.loadDataFile("data/facedata/facedatatrain", numTest,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
+    validationLabels = samples.loadLabelsFile("data/facedata/facedatatrainlabels", numTest)
+    rawTestData = samples.loadDataFile("data/facedata/facedatatest", numTest,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
+    testLabels = samples.loadLabelsFile("data/facedata/facedatatestlabels", numTest)
   else:
-    rawTrainingData = samples.loadDataFile("digitdata/trainingimages", numTraining,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT)
-    trainingLabels = samples.loadLabelsFile("digitdata/traininglabels", numTraining)
-    rawValidationData = samples.loadDataFile("digitdata/validationimages", numTest,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT)
-    validationLabels = samples.loadLabelsFile("digitdata/validationlabels", numTest)
-    rawTestData = samples.loadDataFile("digitdata/testimages", numTest,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT)
-    testLabels = samples.loadLabelsFile("digitdata/testlabels", numTest)
+    rawTrainingData = samples.loadDataFile("data/digitdata/trainingimages", numTraining,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT)
+    trainingLabels = samples.loadLabelsFile("data/digitdata/traininglabels", numTraining)
+    rawValidationData = samples.loadDataFile("data/digitdata/validationimages", numTest,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT)
+    validationLabels = samples.loadLabelsFile("data/digitdata/validationlabels", numTest)
+    rawTestData = samples.loadDataFile("data/digitdata/testimages", numTest,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT)
+    testLabels = samples.loadLabelsFile("data/digitdata/testlabels", numTest)
     
-  
+  print("RAW TRAIN DATA: ", rawTrainingData[1])
   # Extract features
-  print "Extracting features..."
+  print( "Extracting features...")
   trainingData = map(featureFunction, rawTrainingData)
   validationData = map(featureFunction, rawValidationData)
   testData = map(featureFunction, rawTestData)
-  
+  print("MAPPED TRAIN DATA: ")
+  for d in trainingData:
+    print(d)
+
   # Conduct training and testing
-  print "Training..."
+  print( "Training...")
   classifier.train(trainingData, trainingLabels, validationData, validationLabels)
-  print "Validating..."
+  print( "Validating...")
   guesses = classifier.classify(validationData)
   correct = [guesses[i] == validationLabels[i] for i in range(len(validationLabels))].count(True)
-  print str(correct), ("correct out of " + str(len(validationLabels)) + " (%.1f%%).") % (100.0 * correct / len(validationLabels))
-  print "Testing..."
+  print( str(correct), ("correct out of " + str(len(validationLabels)) + " (%.1f%%).") % (100.0 * correct / len(validationLabels)))
+  print( "Testing...")
   guesses = classifier.classify(testData)
   correct = [guesses[i] == testLabels[i] for i in range(len(testLabels))].count(True)
-  print str(correct), ("correct out of " + str(len(testLabels)) + " (%.1f%%).") % (100.0 * correct / len(testLabels))
+  print( str(correct), ("correct out of " + str(len(testLabels)) + " (%.1f%%).") % (100.0 * correct / len(testLabels)))
   analysis(classifier, guesses, testLabels, testData, rawTestData, printImage)
   
   # do odds ratio computation if specified at command line
@@ -336,7 +339,7 @@ def runClassifier(args, options):
     else:
       string3 = "=== Features for which weight(label %d)-weight(label %d) is biggest ===" % (label1, label2)    
       
-    print string3
+    print( string3)
     printImage(features_odds)
 
   if((options.weights) & (options.classifier == "perceptron")):

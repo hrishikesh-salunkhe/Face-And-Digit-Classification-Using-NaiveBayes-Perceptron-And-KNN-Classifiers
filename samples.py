@@ -60,12 +60,15 @@ class Datum:
     self.width = DATUM_WIDTH
     if data == None:
       data = [[' ' for i in range(DATUM_WIDTH)] for j in range(DATUM_HEIGHT)] 
+    # print("DATA:",list(list(convertToInteger(data))[0]))
     self.pixels = util.arrayInvert(convertToInteger(data)) 
-    
+
   def getPixel(self, column, row):
     """
     Returns the value of the pixel at column, row as 0, or 1.
     """
+    print("row: ", row, " col: ", column)
+    print(self.pixels)
     return self.pixels[column][row]
       
   def getPixels(self):
@@ -109,9 +112,10 @@ def loadDataFile(filename, n,width,height):
       data.append(list(fin.pop()))
     if len(data[0]) < DATUM_WIDTH-1:
       # we encountered end of file...
-      print "Truncating at %d examples (maximum)" % i
+      print ("Truncating at %d examples (maximum)" % i)
       break
     items.append(Datum(data,DATUM_WIDTH,DATUM_HEIGHT))
+    # print("ITEMS:", items[0])
   return items
 
 import zipfile
@@ -151,18 +155,24 @@ def IntegerConversionFunction(character):
   """
   Helper function for file reading.
   """
+  print(character)
+  print("-----------------------")
   if(character == ' '):
+    print("FOUND SPACE")
     return 0
   elif(character == '+'):
+    print("FOUND +")
     return 1
   elif(character == '#'):
+    print("FOUND #")
     return 2    
 
 def convertToInteger(data):
   """
   Helper function for file reading.
   """
-  if type(data) != type([]):
+  if type(data) is list:
+  # != type([]):
     return IntegerConversionFunction(data)
   else:
     return map(convertToInteger, data)
@@ -173,17 +183,17 @@ def _test():
   import doctest
   doctest.testmod() # Test the interactive sessions in function comments
   n = 1
-#  items = loadDataFile("facedata/facedatatrain", n,60,70)
-#  labels = loadLabelsFile("facedata/facedatatrainlabels", n)
-  items = loadDataFile("digitdata/trainingimages", n,28,28)
-  labels = loadLabelsFile("digitdata/traininglabels", n)
+#  items = loadDataFile("data/facedata/facedatatrain", n,60,70)
+#  labels = loadLabelsFile("data/facedata/facedatatrainlabels", n)
+  items = loadDataFile("data/digitdata/trainingimages", n,28,28)
+  labels = loadLabelsFile("data/digitdata/traininglabels", n)
   for i in range(1):
-    print items[i]
-    print items[i]
+    print (items[i])
+    print (items[i])
     print (items[i].height)
     print (items[i].width)
-    print dir(items[i])
-    print items[i].getPixels()
+    print (dir(items[i]))
+    print (items[i].getPixels())
 
 if __name__ == "__main__":
   _test()  
