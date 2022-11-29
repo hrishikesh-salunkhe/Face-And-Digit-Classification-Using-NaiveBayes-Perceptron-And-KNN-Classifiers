@@ -49,12 +49,11 @@ class PerceptronClassifier:
     for iteration in range(self.max_iterations):
       print ("Starting iteration ", iteration, "...")
       for i in range(len(trainingData)):
-          "*** YOUR CODE HERE ***"
-
-          actual, guess = trainingLabels[i], self.classify([trainingData[i]])[0]  # The actual answer and the guess we are making
-          if actual != guess:     # If our guess is not equal to the actual answer then we need to update the weights
-            self.weights[actual] = self.weights[actual] + trainingData[i]   # We will add the phi value (trainingData value) to the actual weight so next time it will be greater
-            self.weights[guess]  = self.weights[guess]  - trainingData[i]   # 
+          actual =  trainingLabels[i]
+          guess = self.classify([trainingData[i]])[0]
+          if actual != guess:     
+            self.weights[actual] = self.weights[actual] + trainingData[i]
+            self.weights[guess]  = self.weights[guess]  - trainingData[i]
           # util.raiseNotDefined()
     
   def classify(self, data ):
