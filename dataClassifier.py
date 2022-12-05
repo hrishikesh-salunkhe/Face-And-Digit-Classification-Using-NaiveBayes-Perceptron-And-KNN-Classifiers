@@ -12,10 +12,12 @@
 import mostFrequent
 import naiveBayes
 import perceptron
+import knn
 import mira
 import samples
 import sys
 import util
+import time
 
 TEST_SET_SIZE = 100
 DIGIT_DATUM_WIDTH=28
@@ -165,7 +167,7 @@ def readCommand( argv ):
   from optparse import OptionParser  
   parser = OptionParser(USAGE_STRING)
   
-  parser.add_option('-c', '--classifier', help=default('The type of classifier'), choices=['mostFrequent', 'nb', 'naiveBayes', 'perceptron', 'mira', 'minicontest'], default='mostFrequent')
+  parser.add_option('-c', '--classifier', help=default('The type of classifier'), choices=['mostFrequent', 'nb', 'naiveBayes', 'perceptron', 'mira', 'minicontest', 'knn'], default='mostFrequent')
   parser.add_option('-d', '--data', help=default('Dataset to use'), choices=['digits', 'faces'], default='digits')
   parser.add_option('-t', '--training', help=default('The size of the training set'), default=100, type="int")
   parser.add_option('-f', '--features', help=default('Whether to use enhanced features'), default=False, action="store_true")
@@ -244,6 +246,8 @@ def readCommand( argv ):
         print( "using smoothing parameter k=%f for naivebayes" %  options.smoothing)
   elif(options.classifier == "perceptron"):
     classifier = perceptron.PerceptronClassifier(legalLabels,options.iterations)
+  elif(options.classifier == "knn"):
+    classifier = knn.KNN(options.data)
   elif(options.classifier == "mira"):
     classifier = mira.MiraClassifier(legalLabels, options.iterations)
     if (options.autotune):
@@ -348,8 +352,26 @@ def runClassifier(args, options):
       print ("=== Features with high weight for label %d ==="%l)
       printImage(features_weights)
 
+  return float( (correct / len(testLabels)) * 100)
+
 if __name__ == '__main__':
   # Read input
-  args, options = readCommand( sys.argv[1:] ) 
+  # args, options = readCommand( sys.argv[1:] ) 
   # Run classifier
-  runClassifier(args, options)
+  # runClassifier(args, options)
+
+  timeList = []
+  accuracyList = []
+  t=0
+  for i in range(10):
+    t+=500
+    st=time.process_time()
+    args, options = readCommand(['-d','digits','-c','naiveBayes','-t', str(t),'-k','1','-a'])
+    accuracyList.append(runClassifier(args, options))
+    et=time.process_time()
+    timeList.append(et-st)
+    
+  print("Time List: ",timeList)
+  print("Accuracies List: ", accuracyList)
+#python dataClassifier.py -c naiveBayes -d digits -t 1000 -f -o -1 3 -2 6 -k 2.5
+# [76, 78, 79, 78, 80, 82, 81, 80, 79, 79]

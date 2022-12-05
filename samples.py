@@ -151,29 +151,20 @@ def IntegerConversionFunction(character):
   """
   Helper function for file reading.
   """
-  # for i in range(len(character)):
-  #   for j in range(len(character[i])):
   if(character == ' '):
-    # character[i][j] = 0
     return 0
   elif(character == '+'):
     return 1
-    # character[i][j] = 1
   elif(character == '#'):
     return 2
-    # character[i][j] = 2
-
-  # return character    
-
+    
 def convertToInteger(data):
   """
   Helper function for file reading.
   """
-  # if type(data) is list:
   if(type(data) != type([])):
     return IntegerConversionFunction(data)
   else:
-    # return map(convertToInteger, data)
     return list(map(convertToInteger, data))
 
 # Testing

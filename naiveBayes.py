@@ -9,6 +9,7 @@
 import util
 import classificationMethod
 import math
+import collections
 
 class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
   """
@@ -22,6 +23,9 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     self.type = "naivebayes"
     self.k = 1 # this is the smoothing parameter, ** use it in your train method **
     self.automaticTuning = False # Look at this flag to decide whether to choose k automatically ** use this in your train method **
+    self.count = None
+    self.labelCount = None
+    self.labelsDict = None
     
   def setSmoothing(self, k):
     """
@@ -61,7 +65,62 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     """
 
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    #Generating the counts of each label in trainingLabels: eg- 0: 48, 1: 52
+    labelCount = {}
+    for t in trainingLabels:
+      if t not in labelCount.keys():
+        labelCount[t] = 1
+      else:
+        labelCount[t] += 1
+
+    # Generating probabilities of the label counts:        eg- 0: 0.48, 1: 0.52
+    for key in labelCount.keys():
+        labelCount[key] /= float(len(trainingLabels))
+    
+    labelsDict = {}
+
+    for key in labelCount.keys():
+
+      #Creating a default dictionary of type list for each label:
+      labelsDict[key] = collections.defaultdict(list)
+  
+      # Storing the training data present at the corresponding indices of its training label:
+      # eg- labelTrainData = [{(0,0): 1, ....}, {(0,0): 0, ....}, ...]
+      labelTrainData = []
+      for i in range(len(trainingLabels)):     
+        if trainingLabels[i] == key:                               
+          labelTrainData.append(trainingData[i])
+
+      # Storing training data in its corresponding label's dictionary in labelDict:
+      # eg- labelsDict = {0: {{(0,0): [1, 0, 0, ...], ....}, {(0,1): [0, 1, 1, ...], ....}, ...}, 
+      #                   1: {{(0,0): [0, 1, 0, ...], ....}, {(0,1): [1, 1, 0, ...], ....}, ...}} 
+      for i in range(len(labelTrainData)):
+        for k in labelTrainData[i].keys():
+          labelsDict[key][k].append(labelTrainData[i][k])
+
+    for key in labelCount.keys():     
+      for k in labelTrainData[key].keys():
+        
+        # Calculating the probabilities of each pixel key in labelsDict:
+        # eg- labelsDict = {0: {{(0,0): 0.33, ....}, {(0,1): 0.23, ....}, ...}, 
+        #                   1: {{(0,0): 0.54, ....}, {(0,1): 0.45, ....}, ...}} 
+        keyProb = {}
+        for i in range(len(labelsDict[key][k])):
+          if labelsDict[key][k][i] not in keyProb:
+            keyProb[labelsDict[key][k][i]] = 1
+          else:
+            keyProb[labelsDict[key][k][i]] += 1
+        
+        for x in keyProb.keys():
+          keyProb[x] /= float(len(labelsDict[key][k]))
+
+        labelsDict[key][k] = keyProb
+
+    # Store count, labelCount and labelsDict values so that they can be later used in calculateLogJointProbabilities() function:
+    self.count = labelCount.keys()
+    self.labelCount = labelCount
+    self.labelsDict = labelsDict
+
         
   def classify(self, testData):
     """
@@ -88,8 +147,20 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     """
     logJoint = util.Counter()
     
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    "*** YOUR CODE HERE ***"   
+    # For each label, we calculate it's probability and select the one that is the highest:
+    for i in self.count:    
+      labelProb = self.labelCount[i]  
+
+      # We have stored probabilities for each pixel in labelsDict, we fetch it, take its log and add it to the label's probability:
+      for key in datum.keys():
+        if self.labelsDict[i][key].get(datum[key]) is not None:
+          labelProb += math.log(self.labelsDict[i][key].get(datum[key]))
+        else:
+          # If we do not get a value for a key, we take the value as 0.0001 instead of 0 / None:
+          labelProb += math.log(0.0001)
+      
+      logJoint[i] = labelProb
     
     return logJoint
   
@@ -106,7 +177,3 @@ class NaiveBayesClassifier(classificationMethod.ClassificationMethod):
     util.raiseNotDefined()
 
     return featuresOdds
-    
-
-    
-      

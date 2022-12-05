@@ -1,0 +1,16 @@
+d 66 f 53
+d 63 f 53
+d 64 f 59
+d 65 f 56
+d 66 f 52
+d 63 f 52
+d 59 f 59
+d 57 f 57
+d 58 f 64
+d 58 f 60
+d 54 f 69
+d 51 f 66
+
+
+digits train total = 5000 ie. put t += 500
+faces train total = 450   ie. put t += 45
