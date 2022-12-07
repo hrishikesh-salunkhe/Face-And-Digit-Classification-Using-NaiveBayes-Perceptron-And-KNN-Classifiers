@@ -71,7 +71,6 @@ class PerceptronClassifier:
       for l in self.legalLabels:
         vectors[l] = self.weights[l] * datum
       guesses.append(vectors.argMax())
-    print(guesses)
     return guesses
 
   

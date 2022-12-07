@@ -18,6 +18,8 @@ import samples
 import sys
 import util
 import time
+import matplotlib.pyplot as plt
+import numpy as np
 
 TEST_SET_SIZE = 100
 DIGIT_DATUM_WIDTH=28
@@ -362,16 +364,36 @@ if __name__ == '__main__':
 
   timeList = []
   accuracyList = []
+  percentlist = []
   t=0
   for i in range(10):
-    t+=500
+    t += 500
     st=time.process_time()
-    args, options = readCommand(['-d','digits','-c','naiveBayes','-t', str(t),'-k','1','-a'])
+    args, options = readCommand(['-d','digits','-c','perceptron','-t', str(t),'-k','1','-a'])
     accuracyList.append(runClassifier(args, options))
     et=time.process_time()
     timeList.append(et-st)
-    
+    percentlist.append((i+1)*10)
+
   print("Time List: ",timeList)
   print("Accuracies List: ", accuracyList)
+  print("Percent List: ", percentlist)
+  plt.plot(percentlist, timeList)
+  plt.axhline(y=np.mean(timeList), color='red', linestyle='--', linewidth=3, label='Mean')
+  # plt.axhline(y=np.std(timeList), color='blue', linestyle='--', linewidth=3, label='Standard Deviation')
+  plt.xlabel("Percentage of Training Data")
+  plt.ylabel("Time Taken")
+  plt.title("Perceptron Digits Data")
+  plt.show()
+
+
+  plt.figure()
+  plt.plot(percentlist, accuracyList)
+  plt.axhline(y=np.mean(accuracyList), color='red', linestyle='--', linewidth=3, label='Mean')
+  # plt.axhline(y=np.std(accuracyList), color='blue', linestyle='--', linewidth=3, label='Standard Deviation')
+  plt.xlabel("Percentage of Training Data")
+  plt.ylabel("Accuracy of Predication")
+  plt.title("Perceptron Digits Data")
+  plt.show()
 #python dataClassifier.py -c naiveBayes -d digits -t 1000 -f -o -1 3 -2 6 -k 2.5
 # [76, 78, 79, 78, 80, 82, 81, 80, 79, 79]
