@@ -103,7 +103,11 @@ def loadDataFile(filename, n,width,height):
   fin = readlines(filename)
   fin.reverse()
   items = []
-  for i in range(n):
+
+  # for i in range(n):
+  i = 0
+  while(len(fin) > 0):
+    i += 1
     data = []
     for j in range(height):
       data.append(list(fin.pop()))
@@ -112,7 +116,12 @@ def loadDataFile(filename, n,width,height):
       print ("Truncating at %d examples (maximum)" % i)
       break
     items.append(Datum(data,DATUM_WIDTH,DATUM_HEIGHT))
-  return items
+
+  finalItems = []
+  for i in n:
+    finalItems.append(items[i])
+
+  return finalItems
 
 import zipfile
 import os
@@ -130,11 +139,17 @@ def loadLabelsFile(filename, n):
   """
   fin = readlines(filename)
   labels = []
-  for line in fin[:min(n, len(fin))]:
+  finalLabels = []
+  # for line in fin[:min(n, len(fin))]:
+  for line in fin[:len(fin)]:
     if line == '':
         break
     labels.append(int(line))
-  return labels
+
+  for i in n:
+    finalLabels.append(labels[i])
+
+  return finalLabels
   
 def asciiGrayscaleConversionFunction(value):
   """

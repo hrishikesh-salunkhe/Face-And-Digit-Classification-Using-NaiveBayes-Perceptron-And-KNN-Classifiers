@@ -20,6 +20,7 @@ import util
 import time
 import matplotlib.pyplot as plt
 import numpy as np
+import random
 
 TEST_SET_SIZE = 100
 DIGIT_DATUM_WIDTH=28
@@ -295,10 +296,21 @@ def runClassifier(args, options):
   printImage = args['printImage']
       
   # Load data  
-  numTraining = options.training
-  numTest = options.test
-
+  # numTraining = options.training
+  numTraining = []
+  numTest = []
+  for i in range(options.test):
+    numTest.append(i)
+  
   if(options.data=="faces"):
+
+    counter = 0
+    while(counter < options.training):
+      index = random.randint(0, 450)
+      if index not in numTraining:
+        numTraining.append(index)
+        counter += 1
+
     rawTrainingData = samples.loadDataFile("data/facedata/facedatatrain", numTraining,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
     trainingLabels = samples.loadLabelsFile("data/facedata/facedatatrainlabels", numTraining)
     rawValidationData = samples.loadDataFile("data/facedata/facedatatrain", numTest,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
@@ -306,6 +318,14 @@ def runClassifier(args, options):
     rawTestData = samples.loadDataFile("data/facedata/facedatatest", numTest,FACE_DATUM_WIDTH,FACE_DATUM_HEIGHT)
     testLabels = samples.loadLabelsFile("data/facedata/facedatatestlabels", numTest)
   else:
+
+    counter = 0
+    while(counter < options.training):
+      index = random.randint(0, 4999)
+      if index not in numTraining:
+        numTraining.append(index)
+        counter += 1
+
     rawTrainingData = samples.loadDataFile("data/digitdata/trainingimages", numTraining,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT)
     trainingLabels = samples.loadLabelsFile("data/digitdata/traininglabels", numTraining)
     rawValidationData = samples.loadDataFile("data/digitdata/validationimages", numTest,DIGIT_DATUM_WIDTH,DIGIT_DATUM_HEIGHT)
@@ -368,11 +388,16 @@ if __name__ == '__main__':
   t=0
   for i in range(10):
     t += 45
-    st=time.process_time()
     args, options = readCommand(['-d','faces','-c','knn','-t', str(t),'-k','1','-a'])
-    accuracyList.append(runClassifier(args, options))
-    et=time.process_time()
-    timeList.append(et-st)
+    timeTaken = 0
+    accuracy = 0
+    for j in range(5):
+      st=time.process_time()
+      accuracy += runClassifier(args, options)
+      et=time.process_time()
+      timeTaken += et - st
+    accuracyList.append(accuracy / 5.0)  
+    timeList.append(timeTaken / 5.0)  
     percentlist.append((i+1)*10)
 
   print("Time List: ",timeList)
