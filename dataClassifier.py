@@ -387,8 +387,8 @@ if __name__ == '__main__':
   percentlist = []
   t=0
   for i in range(10):
-    t += 45
-    args, options = readCommand(['-d','faces','-c','knn','-t', str(t),'-k','1','-a'])
+    t += 500
+    args, options = readCommand(['-d','digits','-c','knn','-t', str(t),'-k','1','-a'])
     timeTaken = 0
     accuracy = 0
     for j in range(5):
@@ -408,7 +408,7 @@ if __name__ == '__main__':
   # plt.axhline(y=np.std(timeList), color='blue', linestyle='--', linewidth=3, label='Standard Deviation')
   plt.xlabel("Percentage of Training Data")
   plt.ylabel("Time Taken")
-  plt.title("k-Nearest Neighbors Faces Data")
+  plt.title("k-Nearest Neighbors Digits Data")
   plt.show()
 
 
@@ -418,7 +418,7 @@ if __name__ == '__main__':
   # plt.axhline(y=np.std(accuracyList), color='blue', linestyle='--', linewidth=3, label='Standard Deviation')
   plt.xlabel("Percentage of Training Data")
   plt.ylabel("Accuracy")
-  plt.title("k-Nearest Neighbors Faces Data")
+  plt.title("k-Nearest Neighbors Digits Data")
   plt.show()
 #python dataClassifier.py -c naiveBayes -d digits -t 1000 -f -o -1 3 -2 6 -k 2.5
 # [76, 78, 79, 78, 80, 82, 81, 80, 79, 79]

@@ -1,8 +1,12 @@
 from sklearn.neighbors import KNeighborsClassifier
+import numpy as np
 
 class KNN:
 
+    dataset = ""
+
     def __init__( self, dataset):
+        self.dataset = dataset    
         if dataset == "digits":
             self.knn = KNeighborsClassifier(n_neighbors=1)
         elif dataset == "faces":
