@@ -10,7 +10,7 @@ class KNN:
         if dataset == "digits":
             self.knn = KNeighborsClassifier(n_neighbors=1)
         elif dataset == "faces":
-            self.knn = KNeighborsClassifier(n_neighbors=11)
+            self.knn = KNeighborsClassifier(n_neighbors=103)
 
     def train( self, trainingData, trainingLabels, validationData, validationLabels ):
         reshapedTrainingData = []

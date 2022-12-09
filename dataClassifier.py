@@ -382,13 +382,13 @@ if __name__ == '__main__':
   # Run classifier
   # runClassifier(args, options)
 
-  timeList = []
-  accuracyList = []
-  percentlist = []
-  t=0
-  for i in range(10):
-    t += 500
-    args, options = readCommand(['-d','digits','-c','knn','-t', str(t),'-k','1','-a'])
+  timeList = [0, 0]
+  accuracyList = [0, 0]
+  percentlist = [10, 20]
+  t = 90
+  for i in range(8):
+    t += 45
+    args, options = readCommand(['-d','faces','-c','knn','-t', str(t),'-k','1','-a'])
     timeTaken = 0
     accuracy = 0
     for j in range(5):
@@ -398,7 +398,7 @@ if __name__ == '__main__':
       timeTaken += et - st
     accuracyList.append(accuracy / 5.0)  
     timeList.append(timeTaken / 5.0)  
-    percentlist.append((i+1)*10)
+    percentlist.append((i+3)*10)
 
   print("Time List: ",timeList)
   print("Accuracies List: ", accuracyList)
