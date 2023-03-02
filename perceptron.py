@@ -52,11 +52,10 @@ class PerceptronClassifier:
           
           output = self.classify([trainingData[i]])[0]
 
-          # If the output prediction is not correct, reduce the corresponding weight of wrong output,
-          # increase corresponding weight of correct label: 
+          # If the output prediction is not correct: 
           if trainingLabels[i] != output:
-            self.weights[output]  -= trainingData[i]
-            self.weights[trainingLabels[i]] += trainingData[i]
+            self.weights[output]  -= trainingData[i]              # reduce the corresponding weight of wrong output
+            self.weights[trainingLabels[i]] += trainingData[i]    # increase corresponding weight of correct label
     
   def classify(self, data ):
     """
